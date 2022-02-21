@@ -1,0 +1,12 @@
+D:\CSharpProjects\AutoDragonWar\ADW.Application\bin\Debug\net5.0\ADW.Application.deps.json
+D:\CSharpProjects\AutoDragonWar\ADW.Application\bin\Debug\net5.0\ADW.Application.dll
+D:\CSharpProjects\AutoDragonWar\ADW.Application\bin\Debug\net5.0\ref\ADW.Application.dll
+D:\CSharpProjects\AutoDragonWar\ADW.Application\bin\Debug\net5.0\ADW.Application.pdb
+D:\CSharpProjects\AutoDragonWar\ADW.Application\obj\Debug\net5.0\ADW.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\CSharpProjects\AutoDragonWar\ADW.Application\obj\Debug\net5.0\ADW.Application.AssemblyInfoInputs.cache
+D:\CSharpProjects\AutoDragonWar\ADW.Application\obj\Debug\net5.0\ADW.Application.AssemblyInfo.cs
+D:\CSharpProjects\AutoDragonWar\ADW.Application\obj\Debug\net5.0\ADW.Application.csproj.CoreCompileInputs.cache
+D:\CSharpProjects\AutoDragonWar\ADW.Application\obj\Debug\net5.0\ADW.Application.dll
+D:\CSharpProjects\AutoDragonWar\ADW.Application\obj\Debug\net5.0\ref\ADW.Application.dll
+D:\CSharpProjects\AutoDragonWar\ADW.Application\obj\Debug\net5.0\ADW.Application.pdb
+D:\CSharpProjects\AutoDragonWar\ADW.Application\obj\Debug\net5.0\ADW.Application.csproj.AssemblyReference.cache

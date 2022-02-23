@@ -29,6 +29,7 @@ namespace ADW.App
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtAdventure = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -37,11 +38,9 @@ namespace ADW.App
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.pnUnlock = new System.Windows.Forms.Panel();
-            this.txtPAssWord = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.btnStart = new System.Windows.Forms.Button();
             this.btnUnlock = new System.Windows.Forms.Button();
             this.pnContent = new System.Windows.Forms.Panel();
-            this.btnStart = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
@@ -62,12 +61,12 @@ namespace ADW.App
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1114, 169);
+            this.panel1.Size = new System.Drawing.Size(974, 57);
             this.panel1.TabIndex = 0;
             // 
             // txtAdventure
             // 
-            this.txtAdventure.Location = new System.Drawing.Point(114, 60);
+            this.txtAdventure.Location = new System.Drawing.Point(613, 13);
             this.txtAdventure.Name = "txtAdventure";
             this.txtAdventure.ReadOnly = true;
             this.txtAdventure.Size = new System.Drawing.Size(73, 27);
@@ -76,7 +75,7 @@ namespace ADW.App
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(5, 63);
+            this.label5.Location = new System.Drawing.Point(504, 16);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(90, 20);
             this.label5.TabIndex = 8;
@@ -118,35 +117,28 @@ namespace ADW.App
             // 
             // pnUnlock
             // 
-            this.pnUnlock.Controls.Add(this.txtPAssWord);
-            this.pnUnlock.Controls.Add(this.label1);
+            this.pnUnlock.Controls.Add(this.btnStart);
             this.pnUnlock.Controls.Add(this.btnUnlock);
             this.pnUnlock.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnUnlock.Location = new System.Drawing.Point(576, 0);
+            this.pnUnlock.Location = new System.Drawing.Point(703, 0);
             this.pnUnlock.Name = "pnUnlock";
-            this.pnUnlock.Size = new System.Drawing.Size(538, 169);
+            this.pnUnlock.Size = new System.Drawing.Size(271, 57);
             this.pnUnlock.TabIndex = 3;
             // 
-            // txtPAssWord
+            // btnStart
             // 
-            this.txtPAssWord.Location = new System.Drawing.Point(95, 12);
-            this.txtPAssWord.Name = "txtPAssWord";
-            this.txtPAssWord.PasswordChar = '*';
-            this.txtPAssWord.Size = new System.Drawing.Size(325, 27);
-            this.txtPAssWord.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 20);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Password";
+            this.btnStart.Enabled = false;
+            this.btnStart.Location = new System.Drawing.Point(164, 11);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(94, 29);
+            this.btnStart.TabIndex = 2;
+            this.btnStart.Text = "Start";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // btnUnlock
             // 
-            this.btnUnlock.Location = new System.Drawing.Point(426, 12);
+            this.btnUnlock.Location = new System.Drawing.Point(40, 11);
             this.btnUnlock.Name = "btnUnlock";
             this.btnUnlock.Size = new System.Drawing.Size(94, 29);
             this.btnUnlock.TabIndex = 0;
@@ -156,32 +148,21 @@ namespace ADW.App
             // 
             // pnContent
             // 
-            this.pnContent.Controls.Add(this.btnStart);
             this.pnContent.Controls.Add(this.panel3);
             this.pnContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnContent.Enabled = false;
-            this.pnContent.Location = new System.Drawing.Point(0, 169);
+            this.pnContent.Location = new System.Drawing.Point(0, 57);
             this.pnContent.Name = "pnContent";
-            this.pnContent.Size = new System.Drawing.Size(1114, 386);
+            this.pnContent.Size = new System.Drawing.Size(974, 498);
             this.pnContent.TabIndex = 1;
-            // 
-            // btnStart
-            // 
-            this.btnStart.Location = new System.Drawing.Point(1002, 9);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(94, 29);
-            this.btnStart.TabIndex = 2;
-            this.btnStart.Text = "Start";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // panel3
             // 
             this.panel3.Controls.Add(this.label2);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 44);
+            this.panel3.Location = new System.Drawing.Point(0, 49);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1114, 342);
+            this.panel3.Size = new System.Drawing.Size(974, 449);
             this.panel3.TabIndex = 1;
             // 
             // label2
@@ -190,7 +171,7 @@ namespace ADW.App
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Location = new System.Drawing.Point(0, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(1114, 342);
+            this.label2.Size = new System.Drawing.Size(974, 449);
             this.label2.TabIndex = 0;
             this.label2.Text = "label2";
             // 
@@ -199,9 +180,10 @@ namespace ADW.App
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1114, 555);
+            this.ClientSize = new System.Drawing.Size(974, 555);
             this.Controls.Add(this.pnContent);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -211,7 +193,6 @@ namespace ADW.App
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.pnUnlock.ResumeLayout(false);
-            this.pnUnlock.PerformLayout();
             this.pnContent.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -223,8 +204,6 @@ namespace ADW.App
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel pnContent;
         private System.Windows.Forms.Button btnUnlock;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtPAssWord;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label2;

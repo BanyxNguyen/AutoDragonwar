@@ -2,6 +2,7 @@
 using ADW.Application.Implements;
 using ADW.Application.Options;
 using ADW.Application.RequestFilters;
+using Newtonsoft.Json;
 using PuppeteerSharp;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
@@ -23,6 +25,7 @@ namespace ADW.App
         private readonly PuppeteerBrowserOption _OPtion;
         private readonly PuppeteerBrowser _Browser;
         private CaptureNetwork _CaptureNetwork;
+        private readonly string PatAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private bool _IsStop = false;
         public bool IsToolRuning
         {
@@ -37,16 +40,10 @@ namespace ADW.App
         public FormMain()
         {
             InitializeComponent();
-            UserDataChrome = @"C:\Users\BenNguyen\AppData\Local\Google\Chrome\User Data";
+            UserDataChrome = $@"{PatAppData}\Google\Chrome\User Data";
 
-            _OPtion = new PuppeteerBrowserOption
-            {
-                MetaMaskExtensionId = "nkbihfbeogaeaoehlefnkodbefgpgknn",
-                ChromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-                UserData = Path.Combine(Directory.GetCurrentDirectory(), @"MetaMash"),
-                MetaMaskExtension = @"C:\Users\BenNguyen\AppData\Local\Google\Chrome\User Data\Default\Extensions\nkbihfbeogaeaoehlefnkodbefgpgknn\10.9.3_1"
-            };
-
+            _OPtion = GetOptionFromFile();
+            _OPtion.UserData = Path.Combine(Directory.GetCurrentDirectory(), @"MetaMash");
             CheckProfile(_OPtion.UserData);
 
             var dirMetaMash = GetExtensionMetaMash(_OPtion.UserData, _OPtion.MetaMaskExtensionId);
@@ -55,6 +52,18 @@ namespace ADW.App
 
             _Browser = new PuppeteerBrowser(_OPtion);
             AppInfo = new AppInfo();
+        }
+
+
+
+        private void Application_ApplicationExit(object sender, EventArgs e)
+        {
+        }
+
+        public PuppeteerBrowserOption GetOptionFromFile()
+        {
+            var content = File.ReadAllText("PuppeteerConfig.json");
+            return JsonConvert.DeserializeObject<PuppeteerBrowserOption>(content);
         }
         public string GetExtensionMetaMash(string PathProfile, string ExtensionId)
         {
@@ -137,29 +146,32 @@ namespace ADW.App
         private RequestFilterAdventure _FilterAdventure;
         private async void btnUnlock_Click(object sender, EventArgs e)
         {
-
-            if (string.IsNullOrWhiteSpace(txtPAssWord.Text))
+            try
             {
-                MessageBox.Show(this, "Password can not empty!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                await _Browser.InitialAsync();
+
+            }
+            catch
+            {
+                MessageBox.Show(this, "Close all browser and try again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            var nrow = await _Browser.InitialAsync();
+            await _Browser.InitialTabAsync();
+            _CaptureNetwork = new CaptureNetwork(_Browser.RootPage);
+            _FilterMyGragon = new RequestFilterMyDragonPage();
+            _FilterMyGragon.OnResponseListener += onResponseFilter;
+            _FilterAdventure = new RequestFilterAdventure();
+            _FilterAdventure.OnResponseListener += onResponseAdventure;
+            _CaptureNetwork.AddFilter(_FilterMyGragon);
+            _CaptureNetwork.AddFilter(_FilterAdventure);
 
-            var res = await _Browser.LoginAsync(txtPAssWord.Text);
-            if (res)
-            {
-                pnContent.Enabled = true;
-                pnUnlock.Enabled = false;
-                _CaptureNetwork = new CaptureNetwork(_Browser.RootPage);
+            pnContent.Enabled = true;
+            btnStart.Enabled = true;
+            btnUnlock.Enabled = false;
 
-                _FilterMyGragon = new RequestFilterMyDragonPage();
-                _FilterMyGragon.OnResponseListener += onResponseFilter;
+            await _Browser.GotoNavigateMetaMashAsync();
+            await _Browser.GotoNavigatePageAsync(1);
 
-                _FilterAdventure = new RequestFilterAdventure();
-                _FilterAdventure.OnResponseListener += onResponseAdventure;
-                _CaptureNetwork.AddFilter(_FilterMyGragon);
-                _CaptureNetwork.AddFilter(_FilterAdventure);
-            }
         }
 
         public AppInfo AppInfo { get; set; }
@@ -179,19 +191,36 @@ namespace ADW.App
             MethodInvoker action2 = delegate { txtAdventure.Text = myPageDragonDTO.Payload.Count.ToString(); };
             txtAdventure.Invoke(action2);
         }
-
-        private async void onResponseFilter(ResponseCreatedEventArgs e, MyPageDragonDTO myPageDragonDTO)
+        private void onResponseFilter(ResponseCreatedEventArgs e, MyPageDragonDTO myPageDragonDTO)
         {
             lock (AppInfo)
             {
                 AppInfo.DragonPageInfo = myPageDragonDTO;
             }
 
-            if (AppInfo.PayloadDragonPages == null)
-            {
-                _OPtion.Wallet = e.Response.Request.Headers["wallet"].ToString();
-                AppInfo.PayloadDragonPages = await _Browser.GetPageInfosAsync(AppInfo.DragonPageInfo);
-            }
+            //if (AppInfo.PayloadDragonPages == null && !isLoockLoadPage)
+            //{
+            //    isLoockLoadPage = true;
+            //    _OPtion.Wallet = e.Response.Request.Headers["wallet"].ToString();
+
+            //    _ = Task.Run(async () =>
+            //    {
+            //        try
+            //        {
+            //            AppInfo.PayloadDragonPages = await _Browser.GetPageInfosAsync(AppInfo.DragonPageInfo);
+            //        }
+            //        catch (Exception ex)
+            //        {
+
+            //        }
+            //        finally
+            //        {
+            //            isLoockLoadPage = false;
+            //        }
+
+            //    });
+
+            //}
             Uri myUri = new Uri(e.Response.Url);
             string page = HttpUtility.ParseQueryString(myUri.Query).Get("page");
             MethodInvoker action1 = delegate { txtCurrentPage.Text = page; };
@@ -216,11 +245,19 @@ namespace ADW.App
             try
             {
                 IsToolRuning = false;
+
+                await _Browser.GotoNavigateMetaMashAsync();
+                await _Browser.GotoNavigatePageAsync(1);
+                while (AppInfo.DragonPageInfo == null)
+                {
+                    await Task.Delay(1000);
+                }
+                await Task.Delay(2000);
                 await _Browser.RunAdventureClick(AppInfo);
             }
             finally
             {
-                IsToolRuning = true;
+                //IsToolRuning = true;
             }
         }
     }

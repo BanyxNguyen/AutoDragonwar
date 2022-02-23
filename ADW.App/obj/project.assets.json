@@ -5098,35 +5098,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\BenNguyen\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\UnmatchedTaiNguyen\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\CSharpProjects\\AutoDragonWar\\ADW.App\\ADW.App.csproj",
+      "projectUniqueName": "D:\\ProjectOrder\\AutoDragonwar\\ADW.App\\ADW.App.csproj",
       "projectName": "ADW.App",
-      "projectPath": "D:\\CSharpProjects\\AutoDragonWar\\ADW.App\\ADW.App.csproj",
-      "packagesPath": "C:\\Users\\BenNguyen\\.nuget\\packages\\",
-      "outputPath": "D:\\CSharpProjects\\AutoDragonWar\\ADW.App\\obj\\",
+      "projectPath": "D:\\ProjectOrder\\AutoDragonwar\\ADW.App\\ADW.App.csproj",
+      "packagesPath": "C:\\Users\\UnmatchedTaiNguyen\\.nuget\\packages\\",
+      "outputPath": "D:\\ProjectOrder\\AutoDragonwar\\ADW.App\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\BenNguyen\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.2.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\UnmatchedTaiNguyen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0-windows7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\DevExpress 19.2\\Components\\System\\Components\\Packages": {},
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
@@ -5134,8 +5124,8 @@
         "net5.0-windows7.0": {
           "targetAlias": "net5.0-windows",
           "projectReferences": {
-            "D:\\CSharpProjects\\AutoDragonWar\\ADW.Application\\ADW.Application.csproj": {
-              "projectPath": "D:\\CSharpProjects\\AutoDragonWar\\ADW.Application\\ADW.Application.csproj"
+            "D:\\ProjectOrder\\AutoDragonwar\\ADW.Application\\ADW.Application.csproj": {
+              "projectPath": "D:\\ProjectOrder\\AutoDragonwar\\ADW.Application\\ADW.Application.csproj"
             }
           }
         }
@@ -5173,7 +5163,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -4,14 +4,23 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>Assets\logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Config.json" />
+    <None Remove="Assets\logo.ico" />
+    <None Remove="PuppeteerConfig.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Config.json" />
+    <Resource Include="Assets\logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\logo.ico" />
+    <Content Include="PuppeteerConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -21,5 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ADW.Application\ADW.Application.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties config_1json__JsonSchema="" puppeteerconfig_1json__JsonSchema="https://appsemble.app/api.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

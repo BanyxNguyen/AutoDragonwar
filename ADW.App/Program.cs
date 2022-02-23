@@ -17,7 +17,9 @@ namespace ADW.App
             System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.SystemAware);
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+            //FormWithConsole.NativeMethods.AllocConsole();
             System.Windows.Forms.Application.Run(new FormMain());
+            //FormWithConsole.NativeMethods.FreeConsole();
         }
     }
 }

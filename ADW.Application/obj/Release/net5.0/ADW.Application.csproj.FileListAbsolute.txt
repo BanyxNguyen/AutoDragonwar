@@ -1,0 +1,12 @@
+D:\ProjectOrder\AutoDragonwar\ADW.Application\bin\Release\net5.0\ADW.Application.deps.json
+D:\ProjectOrder\AutoDragonwar\ADW.Application\bin\Release\net5.0\ADW.Application.dll
+D:\ProjectOrder\AutoDragonwar\ADW.Application\bin\Release\net5.0\ADW.Application.pdb
+D:\ProjectOrder\AutoDragonwar\ADW.Application\obj\Release\net5.0\ADW.Application.csproj.AssemblyReference.cache
+D:\ProjectOrder\AutoDragonwar\ADW.Application\obj\Release\net5.0\ADW.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\ProjectOrder\AutoDragonwar\ADW.Application\obj\Release\net5.0\ADW.Application.AssemblyInfoInputs.cache
+D:\ProjectOrder\AutoDragonwar\ADW.Application\obj\Release\net5.0\ADW.Application.AssemblyInfo.cs
+D:\ProjectOrder\AutoDragonwar\ADW.Application\obj\Release\net5.0\ADW.Application.csproj.CoreCompileInputs.cache
+D:\ProjectOrder\AutoDragonwar\ADW.Application\obj\Release\net5.0\ADW.Application.dll
+D:\ProjectOrder\AutoDragonwar\ADW.Application\obj\Release\net5.0\refint\ADW.Application.dll
+D:\ProjectOrder\AutoDragonwar\ADW.Application\obj\Release\net5.0\ADW.Application.pdb
+D:\ProjectOrder\AutoDragonwar\ADW.Application\obj\Release\net5.0\ref\ADW.Application.dll

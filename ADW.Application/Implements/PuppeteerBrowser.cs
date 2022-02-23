@@ -41,6 +41,7 @@ namespace ADW.Application.Implements
                     //$"--profile-directory=\"{_Option.Profile}\"",
                     $"--disable-extensions-except=\"{_Option.MetaMaskExtension}\"",
                     $"--load-extension=\"{_Option.MetaMaskExtension}\"",
+                    "--disable-features=\"site-per-process\""
                 },
                 ExecutablePath = _Option.ChromePath,
             };
@@ -67,53 +68,63 @@ namespace ADW.Application.Implements
         }
         public async Task ComfirmMetaMashAsync()
         {
-            await Task.Delay(3000);
-            await MetaMarkPage.BringToFrontAsync();
-            await MetaMarkPage.GoToAsync(string.Format("chrome-extension://{0}/popup.html", _Option.MetaMaskExtensionId));
-            await Task.Delay(1000);
-            var lstTemp = await MetaMarkPage.QuerySelectorAllAsync("button");
+            await GotoNavigateMetaMashAsync();
 
-            var regexbtn = new Regex(@"^\s*Confirm\s*$", RegexOptions.IgnoreCase);
             ElementHandle buttonConfirm = null;
-            foreach (var item in lstTemp)
+            int time = 0;
+            while (buttonConfirm == null && ++time < 4)
             {
-                var content = await MetaMarkPage.EvaluateFunctionAsync<string>("e => e.textContent", item);
-                if (regexbtn.IsMatch(content))
-                {
-                    buttonConfirm = item;
-                    break;
-                }
-            }
-            await Task.Delay(2000);
-            await buttonConfirm.ClickAsync();
+                var lstTemp = await MetaMaskPage.QuerySelectorAllAsync("button");
 
-            //var page = this.GetMetaMashPageAsync("")
+                var regexbtn = new Regex(@"^\s*Confirm\s*$", RegexOptions.IgnoreCase);
+                foreach (var item in lstTemp)
+                {
+                    var content = await MetaMaskPage.EvaluateFunctionAsync<string>("e => e.textContent", item);
+                    if (regexbtn.IsMatch(content))
+                    {
+                        buttonConfirm = item;
+                        break;
+                    }
+                }
+                await Task.Delay(3000);
+            }
+            if (buttonConfirm != null)
+            {
+                await buttonConfirm?.ClickAsync();
+            }
         }
 
-        public Page MetaMarkPage { get; set; }
+        public Page MetaMaskPage { get; set; }
         public async Task<bool> LoginAsync(string PassWord)
         {
             var pages = await _Browser.PagesAsync();
             RootPage = pages[0];
 
             await Task.Delay(5000);
-            MetaMarkPage = await _Browser.NewPageAsync();
-            await MetaMarkPage.BringToFrontAsync();
-            await MetaMarkPage.GoToAsync(string.Format("chrome-extension://{0}/home.html#unlock", _Option.MetaMaskExtensionId));
-            var pwd = await MetaMarkPage.WaitForSelectorAsync("*[type='password']");
+            MetaMaskPage = await _Browser.NewPageAsync();
+            await MetaMaskPage.BringToFrontAsync();
+            await MetaMaskPage.GoToAsync(string.Format("chrome-extension://{0}/home.html#unlock", _Option.MetaMaskExtensionId));
+            var pwd = await MetaMaskPage.WaitForSelectorAsync("*[type='password']");
             await pwd.TypeAsync(PassWord, new PuppeteerSharp.Input.TypeOptions { Delay = 100 });
             await Task.Delay(1000);
 
-            var button = await MetaMarkPage.QuerySelectorAsync("button");
+            var button = await MetaMaskPage.QuerySelectorAsync("button");
             await button.ClickAsync();
 
-            var resCheck = MetaMarkPage.WaitForSelectorAsync("*[class='selected-account__clickable']");
-
-            await RootPage.GoToAsync("https://dragonwars.game/#/train");
+            var resCheck = MetaMaskPage.WaitForSelectorAsync("*[class='selected-account__clickable']");
 
             return resCheck != null;
         }
+        public string _UrlGameApp = "https://dragonwars.game/#/train";
 
+        public string _UrlMetaMashPopup { get => string.Format("chrome-extension://{0}/popup.html", _Option.MetaMaskExtensionId); }
+        public string _UrlMetaMashHome { get => string.Format("chrome-extension://{0}/home.html#unlock", _Option.MetaMaskExtensionId); }
+        public async Task InitialTabAsync()
+        {
+            var pages = await _Browser.PagesAsync();
+            RootPage = pages[0];
+            MetaMaskPage = await _Browser.NewPageAsync();
+        }
 
         //public async Task<ElementHandle[]> GetHanleNavigateButtonsAsync()
         //{
@@ -129,7 +140,14 @@ namespace ADW.Application.Implements
 
         public async Task GotoNavigatePageAsync(int page)
         {
+            await RootPage.BringToFrontAsync();
             await RootPage.GoToAsync($"https://dragonwars.game/#/train?page={page}");
+            await Task.Delay(2000);
+        }
+        public async Task GotoNavigateMetaMashAsync()
+        {
+            await MetaMaskPage.BringToFrontAsync();
+            await MetaMaskPage.GoToAsync(_UrlMetaMashPopup);
             await Task.Delay(2000);
         }
         public async Task<IList<PayloadDragonPage>> GetPageInfosAsync(MyPageDragonDTO myPageDragonDTO)
@@ -148,7 +166,6 @@ namespace ADW.Application.Implements
         }
         public async Task<IList<CardInfo>> GetCardItemsAsync(int page)
         {
-            await RootPage.BringToFrontAsync();
             await Task.Delay(2000);
             await GotoNavigatePageAsync(page);
             var lstData = new List<CardInfo>();
@@ -168,46 +185,29 @@ namespace ADW.Application.Implements
                     if (regexSpan.IsMatch(content))
                     {
                         card.Id = content;
-                       
-                        break;
-                    }
-                }
-                var buttons = await item.QuerySelectorAllAsync("button");
-                foreach (var button in buttons)
-                {
-                    var content = await button.EvaluateFunctionAsync<string>("e => e.textContent", item);
-
-                    if (regexbtn.IsMatch(content))
-                    {
-                        card.AdventureButton = item;
 
                         break;
                     }
                 }
-
-                lstData.Add(card);
-                //content = await item.EvaluateFunctionAsync<string>("e => e.textContent", item);
-                //if (regexbtn.IsMatch(content))
+                //var buttons = await item.QuerySelectorAllAsync("button");
+                //foreach (var button in buttons)
                 //{
-                //    lstData[index++].AdventureButton = item;
+                //    var content = await button.EvaluateFunctionAsync<string>("e => e.textContent", item);
+
+                //    if (regexbtn.IsMatch(content))
+                //    {
+                //      await  item.ClickAsync();
+                //        card.AdventureButton = item;
+
+                //        break;
+                //    }
                 //}
 
+                lstData.Add(card);
+
+
             }
-            //foreach (var item in lstTemp)
-            //{
 
-            //}
-
-            //lstTemp = await RootPage.QuerySelectorAllAsync("button");
-
-            //foreach (var item in lstTemp)
-            //{
-            //    var content = await RootPage.EvaluateFunctionAsync<string>("e => e.textContent", item);
-            //    if (regexbtn.IsMatch(content))
-            //    {
-            //        lstData[index++].AdventureButton = item;
-            //    }
-            //}
 
             return lstData;
         }
@@ -224,32 +224,35 @@ namespace ADW.Application.Implements
                 return temp.ToHashSet();
             }).ToList();
         }
-
+        public async Task AdventureClickAsync(int index)
+        {
+            await RootPage.BringToFrontAsync();
+            await RootPage.ClickAsync($".grid > div.relative:nth-child({index + 1}) button:nth-child(2)");
+        }
         public async Task RunAdventureClick(AppInfo appInfo)
         {
-            await MetaMarkPage.GoToAsync(string.Format("chrome-extension://{0}/popup.html", _Option.MetaMaskExtensionId));
 
-            await RootPage.BringToFrontAsync();
             await Task.Delay(2000);
-            var lstPage = GetAdventureForPage(appInfo);
-
-            int page = 1;
-            foreach (var item in lstPage)
+            //var lstPage = GetAdventureForPage(appInfo);
+            var lstAdventure = appInfo.AdventureInfo.Payload.Select(x => $"#{x}").ToHashSet();
+            var AmountPages = appInfo.DragonPageInfo.Payload.TotalPage;
+            for (int page = 0; page < AmountPages; page++)
             {
-                while (true)
+                //foreach (var item in lstPage)
+                //{
+                var lstTemp = await GetCardItemsAsync(page + 1);
+                if (lstTemp.Count < 1) break;
+                for (int i = 0; i < lstTemp.Count; i++)
                 {
-                    await RootPage.BringToFrontAsync();
-                    var lstTemp = await GetCardItemsAsync(page++);
-                    if (lstTemp.Count < 1) break;
-
-                    var card = lstTemp.First();
+                    var card = lstTemp[i];
                     try
                     {
-                        if (card != null && item.Contains(card.Id.Trim()) && card.AdventureButton != null)
+                        if (card != null && lstAdventure.Contains(card.Id.Trim()))
                         {
                             await Task.Delay(2000);
-                            await card.AdventureButton.ClickAsync();
-                            await Task.Delay(5000);
+                            await AdventureClickAsync(i);
+                            lstAdventure.Remove(card.Id.Trim());
+                            await Task.Delay(1000);
                             await ComfirmMetaMashAsync();
                             await Task.Delay(2000);
                         }
@@ -258,6 +261,8 @@ namespace ADW.Application.Implements
                     {
                     }
                 }
+
+                //}
             }
 
         }

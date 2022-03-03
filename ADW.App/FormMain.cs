@@ -257,7 +257,7 @@ namespace ADW.App
             }
             finally
             {
-                //IsToolRuning = true;
+                IsToolRuning = true;
             }
         }
     }
